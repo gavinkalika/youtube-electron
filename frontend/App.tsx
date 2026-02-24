@@ -5,6 +5,7 @@ import './App.css';
 
 export function App() {
   const [videoId, setVideoId] = useState('');
+  // hook aka behavior of the component
   const { loading, video, error, fetchVideo, reset } = useVideo();
 
   const handleSubmit = (e: FormEvent) => {

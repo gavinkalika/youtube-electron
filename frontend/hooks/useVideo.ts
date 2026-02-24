@@ -1,5 +1,6 @@
 import { useReducer, useCallback } from 'react';
 import type { Video } from '../types/video';
+import { getVideo } from '../api/video';
 
 // State
 interface State {
@@ -40,6 +41,17 @@ function reducer(state: State, action: Action): State {
 
 // Hook with reducer + executor
 export function useVideo() {
+  // useReducer manages complex state with actions.
+  // - state: current values (loading, video, error)
+  // - dispatch: function to send actions like { type: 'FETCH_START' }
+  // When dispatch is called, the reducer function runs and returns new state.
+  // React then re-renders the component with the updated state.
+  //
+  // We use useReducer instead of useState because it's less verbose when
+  // managing multiple related values that change together. With useState,
+  // you'd need separate setLoading/setVideo/setError calls scattered
+  // throughout the code. With useReducer, state transitions are defined
+  // once in the reducer function.
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // Executor - does actual work via HTTP, dispatches actions
@@ -47,13 +59,12 @@ export function useVideo() {
     dispatch({ type: 'FETCH_START' });
 
     try {
-      const response = await fetch(`/api/video/${videoId}`);
-      const result = await response.json();
+      const result = await getVideo(videoId);
 
-      if (result.ok) {
+      if (result.ok && result.value) {
         dispatch({ type: 'FETCH_SUCCESS', video: result.value });
       } else {
-        dispatch({ type: 'FETCH_ERROR', error: result.error });
+        dispatch({ type: 'FETCH_ERROR', error: result.error ?? 'Unknown error' });
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
