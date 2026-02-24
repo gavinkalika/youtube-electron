@@ -1,4 +1,4 @@
-import type { Video } from '@shared/types/video';
+import type { Video } from '../types/video';
 
 interface VideoCardProps {
   video: Video;

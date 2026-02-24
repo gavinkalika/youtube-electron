@@ -1,5 +1,5 @@
 import { useReducer, useCallback } from 'react';
-import type { Video } from '@shared/types/video';
+import type { Video } from '../types/video';
 
 // State
 interface State {
@@ -42,12 +42,13 @@ function reducer(state: State, action: Action): State {
 export function useVideo() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Executor - does actual work, dispatches actions
+  // Executor - does actual work via HTTP, dispatches actions
   const fetchVideo = useCallback(async (videoId: string) => {
     dispatch({ type: 'FETCH_START' });
 
     try {
-      const result = await window.electronAPI.getVideo(videoId);
+      const response = await fetch(`/api/video/${videoId}`);
+      const result = await response.json();
 
       if (result.ok) {
         dispatch({ type: 'FETCH_SUCCESS', video: result.value });
