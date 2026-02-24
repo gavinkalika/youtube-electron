@@ -1,0 +1,19 @@
+{
+  "appId": "com.electron.youtube",
+  "productName": "Electron YouTube",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "mac": {
+    "target": "dmg"
+  },
+  "win": {
+    "target": "nsis"
+  },
+  "linux": {
+    "target": "AppImage"
+  }
+}

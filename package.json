@@ -1,0 +1,33 @@
+{
+  "name": "electron-youtube",
+  "version": "1.0.0",
+  "description": "Electron app to fetch YouTube video metadata and extract audio",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:main\" \"npm run dev:renderer\"",
+    "dev:main": "tsc -p tsconfig.node.json && electron .",
+    "dev:renderer": "vite",
+    "build": "tsc -p tsconfig.node.json && vite build",
+    "build:main": "tsc -p tsconfig.node.json",
+    "build:renderer": "vite build",
+    "preview": "vite preview",
+    "start": "electron ."
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "electron-store": "^8.2.0",
+    "googleapis": "^140.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^8.2.2",
+    "electron": "^31.2.1",
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.4"
+  }
+}
