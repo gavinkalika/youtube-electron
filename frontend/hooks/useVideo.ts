@@ -1,6 +1,7 @@
 import { useReducer, useCallback } from 'react';
 import type { Video } from '../types/video';
-import { getVideo } from '../api/video';
+import { getVideo as defaultGetVideo } from '../api/video';
+import type { GetVideoFn } from '../api/video';
 
 // State
 interface State {
@@ -40,7 +41,9 @@ function reducer(state: State, action: Action): State {
 }
 
 // Hook with reducer + executor
-export function useVideo() {
+// Accepts an optional API function for dependency injection.
+// This allows tests to pass in a mock function instead of hitting the real API.
+export function useVideo(getVideo: GetVideoFn = defaultGetVideo) {
   // useReducer manages complex state with actions.
   // - state: current values (loading, video, error)
   // - dispatch: function to send actions like { type: 'FETCH_START' }
@@ -70,7 +73,7 @@ export function useVideo() {
       const message = error instanceof Error ? error.message : 'Unknown error';
       dispatch({ type: 'FETCH_ERROR', error: message });
     }
-  }, []);
+  }, [getVideo]);
 
   const reset = useCallback(() => {
     dispatch({ type: 'RESET' });
